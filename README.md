@@ -1,5 +1,5 @@
 # SLiM-Gym
-An early development Gymnasium wrapper for SLiM 4 simulator enabling reinforcement learning for population genetics
+An early development Gymnasium wrapper for the SLiM 4 simulator enabling reinforcement learning for population genetics
 
 ## Quick start guide
 1. Install via pip: `pip install slim_gym`
@@ -11,7 +11,7 @@ import slim_gym
 slim_gym.run_random_agent()
 ```
 
-Users can also adjust the environment and pass it as a parameter to our random walk algorithm:
+Users can also adjust the environment and pass it as a parameter to the random walk algorithm:
 
 ```python
 import slim_gym
