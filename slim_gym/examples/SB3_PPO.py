@@ -9,7 +9,7 @@ are tuned, but the initial experiments show learning on the SFS env
 import os
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
-from .examples.make_env import make_env
+from .make_env import make_env
 
 def train_agent(total_timesteps=50000):
     # Create dirs

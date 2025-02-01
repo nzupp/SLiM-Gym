@@ -5,7 +5,7 @@
 SLiM-Gym: A gymnasium environment for SLiM evolutionary simulations
 """
 
-__version__ = "0.1.9"
+__version__ = "0.1.10"
 
 from .slim_gym_wrapper import SLiMGym
 from .sfs import SFSGym

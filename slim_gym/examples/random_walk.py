@@ -1,4 +1,11 @@
-from .examples.make_env import make_env
+# -*- coding: utf-8 -*-
+"""
+@author: nzupp
+
+Random walk example to test SLiM-Gym
+"""
+
+from .make_env import make_env
 import matplotlib.pyplot as plt
 
 def run_random_agent(episodes=5,
