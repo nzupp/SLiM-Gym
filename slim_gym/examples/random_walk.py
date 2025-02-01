@@ -1,4 +1,4 @@
-from .sfs import SFSGym
+from .examples.make_env import make_env
 import matplotlib.pyplot as plt
 
 def run_random_agent(episodes=5,
@@ -19,16 +19,7 @@ def run_random_agent(episodes=5,
     """
     
     if env is None:
-        env = SFSGym(
-            output_file='sim.slim',
-            init_mutation_rate=1e-7,
-            num_sites=999,
-            recomb_rate=1e-8,
-            pop_size=10000,
-            sampled_individuals=25,
-            sfs_stack_size=8,
-            bottleneck=0.98
-        )
+        env = make_env()
 
     # Store step-by-step rewards for each episode
     episode_reward_trajectories = []
