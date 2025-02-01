@@ -56,14 +56,14 @@ class SLiMGym(gym.Env):
             Nothing
         """
         try:
-            # Flag file: Communication from Python to SLiM; contains action for simulation
-            # State file: the full SLiM log from the episode start to current time t
-            # Generation complete file: Helps avoid race conditions at end of episode
-            # See documentation/paper for more protocol info
             for filename in ['flag.txt', 'state.txt', 'generation_complete.txt']:
                 file_path = Path(filename)
                 if file_path.exists():
-                    file_path.unlink()
+                    # Wait for the file to be released before deletion.
+                    if self.wait_for_file_release(str(file_path), timeout=1.0):
+                        file_path.unlink()
+                    else:
+                        print(f"Warning: {filename} is still in use; cannot unlink at this time.")
         except Exception as e:
             print(f"Error cleaning up files: {e}")
 
@@ -279,4 +279,5 @@ class SLiMGym(gym.Env):
                 self.process.wait(timeout=5)
             except:
                 print("Process kill timeout")
+        time.sleep(0.05)
         self._cleanup_files()
