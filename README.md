@@ -3,9 +3,8 @@ Gymnasium wrapper for SLiM 4 simulator enabling reinforcement learning for popul
 
 ## Quick start guide
 1. Install via pip: `pip install slim_gym`
-2. Install SLiM 4 from [Messer Lab](https://messerlab.org/slim/) and ensure it's in your system PATH or working directory
-
-From here, using SLiM-Gym on the established environments becomes rather trivial. If you want to get started immediately, you can import slim_gym and run an algorithm that will walk through the simulation, choosing random actions:
+2. Install SLiM 4 from the [Messer Lab](https://messerlab.org/slim/) and ensure it's in your system PATH or working directory
+3. Run a basic, random agent:
 
 ```python
 import slim_gym
@@ -39,6 +38,6 @@ env = slim_gym.make_env(output_file=output_file,
 slim_gym.run_random_agent(env=env)
 ```
 
-If these parameters are unfamiliar to you, our more detailed documentation (coming soon) is a great place to start. This environment functions as a Gymnasium enviornment, and can be used as such downstream. The code for making environments and the random walk algorithm can be found in the examples/ folder.
+If these parameters are unfamiliar to you, our more detailed documentation (coming soon) is a great place to start. This environment functions as a Gymnasium environment, and can be used as such downstream. The code for making environments and the random walk algorithm can be found in the examples/ folder.
 
 
