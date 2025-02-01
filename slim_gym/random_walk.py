@@ -1,4 +1,4 @@
-from sfs import SFSGym
+from .sfs import SFSGym
 import matplotlib.pyplot as plt
 
 def run_random_agent(episodes=5,
