@@ -2,7 +2,7 @@
 Gymnasium wrapper for SLiM 4 simulator enabling reinforcement learning for population genetics
 
 ## Quick start guide
-SLiM-Gym can be quickly downloaded through the command `pip install slim_gym`. This will download nearly all the content needed to use SLiM-Gym- but is notably lacking one important executable: SLiM! We suggest users reference the detailed instructions in the SLiM manual availabe at the Messer Lab website: https://messerlab.org/slim/, and ensure teh slim.exe is available either in the global path or the working directory. Future iterations of this documentation may include more detail on this section but for now we will assume you have access to SLiM.
+SLiM-Gym can be quickly downloaded through the command `pip install slim_gym`. This will download nearly all the content needed to use SLiM-Gym- but is notably lacking one important executable: SLiM! We suggest users reference the detailed instructions in the SLiM manual availabe at the Messer Lab website: https://messerlab.org/slim/, and ensure the `slim.exe` is available either in the user's global path or the working directory.
 
 From here, using SLiM-Gym on the established environments becomes rather trivial. If you want to get started immediately, you can import slim_gym and run an algorithm that will walk through the simulation, choosing random actions:
 
