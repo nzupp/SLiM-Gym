@@ -5,9 +5,9 @@
 SLiM-Gym: A gymnasium environment for SLiM evolutionary simulations
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
-from .slim_gym import *
-from .sfs import *
-from .slim_injector import *
-from .random_walk import *
+from .slim_gym import SLiMGym
+from .sfs import SFSGym
+from .slim_injector import create_slim_script
+from .random_walk import run_random_agent
