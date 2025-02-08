@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Feb  1 15:55:43 2025
-
 @author: nzupp
 """
 import slim_gym
