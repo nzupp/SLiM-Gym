@@ -27,7 +27,7 @@ def create_slim_script(output_file, init_mutation_rate, num_sites, recomb_rate, 
     script = f"""initialize() {{
     // The flag file used for communicating the desired population size
     defineConstant("FLAG_FILE", "flag.txt");
-    defineConstant("MUT_RATE", {init_mutation_rate});
+    MUT_RATE = {init_mutation_rate};
     initializeMutationRate({init_mutation_rate});
     initializeMutationType("m1", 0.5, "f", 0.0);
     initializeGenomicElementType("g1", m1, 1.0);
