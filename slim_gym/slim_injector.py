@@ -27,7 +27,6 @@ def create_slim_script(output_file, init_mutation_rate, num_sites, recomb_rate, 
     script = f"""initialize() {{
     // The flag file used for communicating the desired population size
     defineConstant("FLAG_FILE", "flag.txt");
-    MUT_RATE = {init_mutation_rate};
     initializeMutationRate({init_mutation_rate});
     initializeMutationType("m1", 0.5, "f", 0.0);
     initializeGenomicElementType("g1", m1, 1.0);
@@ -37,6 +36,7 @@ def create_slim_script(output_file, init_mutation_rate, num_sites, recomb_rate, 
 1 early() {{
     // Create initial subpopulation with the provided pop_size.
     sim.addSubpop("p1", {pop_size});
+    MUT_RATE = {init_mutation_rate};
 }}
 900:1000 late() {{
     if (community.tick % 10 == 0) {{
