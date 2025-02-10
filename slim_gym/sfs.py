@@ -214,7 +214,7 @@ class SFSGym(SLiMGym):
         multiplier = self.action_map[action]
         new_pop_size = np.clip(
             self.current_pop_size * multiplier,
-            self.sampled_indivdiuals,
+            self.sampled_individuals,
             10e10
         )
         self.current_pop_size = new_pop_size
