@@ -213,7 +213,7 @@ class SFSGym(SLiMGym):
         """
         multiplier = self.action_map[action]
         new_pop_size = np.clip(
-            self.current_mutation_rate * multiplier,
+            self.current_pop_size * multiplier,
             self.sampled_indivdiuals,
             10e10
         )
