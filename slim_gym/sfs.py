@@ -62,10 +62,10 @@ class SFSGym(SLiMGym):
         # Initialize base class with generated script
         super().__init__(slim_file=output_file)
         
-        self.init_mutation_rate = init_mutation_rate
-        self.current_mutation_rate = init_mutation_rate
+        self.current_pop_size = pop_size
+        self.sampled_individuals = sampled_individuals
         self.num_sites = num_sites
-        self.num_bins = (sampled_individuals * 2)
+        self.num_bins = 100
         self.sfs_stack_size = sfs_stack_size
         self.expectation_sfs = None
         
@@ -125,24 +125,39 @@ class SFSGym(SLiMGym):
         """
         lines = state_data.strip().split('\n')
         binary_lines = [line.strip() for line in lines 
-                       if set(line.strip()).issubset({'0', '1'})]
-        # Small postive val for KLD calc later- applied to all instances
+                        if set(line.strip()).issubset({'0', '1'})]
+        
+        # If no valid binary data, return an SFS filled with small values
         if not binary_lines:
-            return np.zeros(self.num_bins, dtype=np.float32) + 1e-10
+            return np.full(self.num_bins, 1e-10, dtype=np.float32)
         
         lengths = [len(line) for line in binary_lines]
         max_len = max(lengths)
         binary_lines = [line.ljust(max_len, '0')[:max_len] for line in binary_lines]
         
+        # Build the data matrix: rows are sequences/haplotypes, columns are sites
         data = np.array([[int(char) for char in line] for line in binary_lines])
+        total = data.shape[0]  # number of haplotypes (or alleles, since each row is one haplotype)
         column_sums = np.sum(data, axis=0)
         
-        sfs = np.zeros(self.num_bins, dtype=np.float32) + 1e-10
-        values, counts = np.unique(column_sums, return_counts=True)
+        # Calculate frequency (in percent) for each site
+        # For each column, frequency = (number of 1's / total) * 100
+        freqs = (column_sums / total) * 100.0
         
-        for val, count in zip(values, counts):
-            if val < len(sfs):
-                sfs[val] = count + 1e-10
+        # Determine the bucket: floor the frequency value
+        # Bucket 0 corresponds to frequencies in [0, 1)%, bucket 1 to [1, 2)%, etc.
+        buckets = np.floor(freqs).astype(int)
+        
+        # Ignore fixed sites (i.e. those with frequency 100%)
+        valid_buckets = buckets[buckets < 100]
+        
+        # Initialize SFS with small positive values
+        sfs = np.full(self.num_bins, 1e-10, dtype=np.float32)
+        
+        if valid_buckets.size > 0:
+            unique_bins, counts = np.unique(valid_buckets, return_counts=True)
+            for b, count in zip(unique_bins, counts):
+                sfs[b] = count + 1e-10
                 
         return sfs
     
@@ -187,23 +202,23 @@ class SFSGym(SLiMGym):
 
     def process_action(self, action):
         """
-        Implement the abstract SLiM-Gym function by assigning a new mutation rate.
-        Note: mutation rate is bound between 1e-8 and 1e-6, which could be too restrictive
+        Implement the abstract SLiM-Gym function by assigning a new population size.
+        Note: Population size is bound between self.sampled_indv and 10e10, which could be too restrictive
 
         Params
             action (Int): Discrete action of 0, 1 or 2
 
         Returns
-            new_rate (Float): The modified mutation rate
+            new_rate (Float): The modified population size
         """
         multiplier = self.action_map[action]
-        new_rate = np.clip(
+        new_pop_size = np.clip(
             self.current_mutation_rate * multiplier,
-            1e-8,
-            1e-6
+            self.sampled_indivdiuals,
+            10e10
         )
-        self.current_mutation_rate = new_rate
-        return str(new_rate)
+        self.current_pop_size = new_pop_size
+        return str(new_pop_size)
 
     # TODO I imagine this could be the center of a decent experiment
     def calculate_reward(self, state, action, next_state):
