@@ -8,12 +8,13 @@ Task: Identify the change in mutation rate needed to maintain previous
 AFS in a bottleneck
 """
 
-from slim_gym import make_sfs_env
+import pkg_resources
+from .. import make_sfs_env
 from stable_baselines3 import PPO
 
 def main():
     # Create the environment
-    env = make_sfs_env(slim_file="bottleneck.slim")
+    bottleneck_script = pkg_resources.resource_filename('slim_gym', 'scripts/bottleneck.slim')
 
     # Create PPO model
     model = PPO("MlpPolicy", env, verbose=1)
