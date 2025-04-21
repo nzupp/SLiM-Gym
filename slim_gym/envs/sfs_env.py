@@ -18,55 +18,27 @@ import numpy as np
 from gymnasium import spaces
 from collections import deque
 from .slim_gym_wrapper import SLiMGym
-from .slim_injector import create_slim_script
 
 class SFSGym(SLiMGym):
-    def __init__(self, 
-                 output_file,
-                 init_mutation_rate,
-                 num_sites,
-                 recomb_rate,
-                 pop_size,
-                 sampled_individuals,
-                 sfs_stack_size,
-                 bottleneck):
+    def __init__(self, slim_file):
         """
         Initalizes the env.
         
         Params:
-            output_file (String): Name of the SLiM script the injector generates. Must end with .slim extension.
-            init_mutation_rate (Float): Starting mutation rate of the SLiM simulation
-            num_sites (Int): Number of sites to simulate (reccomend under 1k for testing)
-            recomb_rate (Float): The recombination rate
-            pop_size (Int): The size of the starting poplation. Note: Assume Ne = Nc under WF
-            sampled_individuals (Int): number of individuals sampled each step
-            SFS_stack_size (Int): Size of SFS 'stack' i.e. how many generations of SFS stay in observation
-            bottleneck (Float): The multiplicative factor the population is changed by. When less than 1 bottleneck, greater than 1 is expansion
+            slim_file (String): Name of the SLiM script
             
         Returns:
             Nothing       
         """
         
-        # Create the SLiM script first
-        # Calls to the SLiM injector
-        create_slim_script(
-            output_file=output_file,
-            init_mutation_rate=init_mutation_rate,
-            num_sites=num_sites,
-            recomb_rate=recomb_rate,
-            pop_size=pop_size,
-            sample_size=sampled_individuals,
-            bottleneck=bottleneck
-        )
-    
         # Initialize base class with generated script
-        super().__init__(slim_file=output_file)
+        super().__init__(slim_file=slim_file)
         
-        self.current_pop_size = pop_size
-        self.sampled_individuals = sampled_individuals
-        self.num_sites = num_sites
+        self.current_pop_size = 10000
+        self.sampled_individuals = 25
+        self.num_sites = 999
         self.num_bins = 100
-        self.sfs_stack_size = sfs_stack_size
+        self.sfs_stack_size = 8
         self.expectation_sfs = None
         
         # Action space that allows for some parameter of the simulation to be
