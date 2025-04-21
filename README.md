@@ -1,17 +1,17 @@
 # SLiM-Gym
 
 ## General overview
-SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning in population genetics. It provides a framework for seamless communication with SLiM 4's evolutionary models while integrating with Gymnasium’s intuitive action, observation, and reward systems.
+SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning as a tool for population genetics. It provides a framework for seamless communication with SLiM 4's evolutionary models while integrating with Gymnasium’s intuitive action, observation, and reward systems.
 
 ## Requirements
 - Python 3.8+
 - SLiM 4.0 or newer
 - For visualization features: matplotlib, seaborn (optional)
-- Stable-Baselines3 for reinforcement learning examples
+- Stable-Baselines3 for reinforcement learning example
 
 ## Quick start guide
 1. Install via pip: `pip install slim_gym`
-2. Install SLiM 4 from the [Messer Lab](https://messerlab.org/slim/) and ensure it's in your system PATH or working directory
+2. Install SLiM 4 from the [Messer Lab Github](https://github.com/MesserLab/SLiM/releases?q=4.3&expanded=true) and ensure it's in your system PATH or working directory
 3. Run the example to train a PPO agent on a bottleneck simulation example:
 
 ```python
@@ -23,9 +23,46 @@ slim_gym.PPO_example()
 ### SLiM evolutionary model
 SLiM-Gym utilizes Eidos scripts created for running evolutionary simulations with SLiM. The SLiM 4 documentation goes into extensive detail regarding the specifics of these tools, but in short SLiM is highly powerful and flexible, able to model most evolutionary scenarios. The SLiM-Gym package includes two established SLiM scripts- one tracking a single population experiencing a bottleneck, and another that tracks population growth.
 
-Both of these models contain SLiM-Gym 'hooks', or additions to the underlying model, that enable SLiM to communicate with the rest of the SLiM-Gym framework. These hooks include reading a flag file and setting parameters from it, using a signal file to continue generations, a end of simulation signal.
+Both of these models contain SLiM-Gym 'hooks', or additions to the underlying model, that enable SLiM to communicate with the rest of the SLiM-Gym framework. For a SLiM script to be compatible with SLiM-Gym, it needs to implement several specific hooks:
 
-Both the presence of the SLiM simulator in the path or working directory and the presence of the necessary hooks can be checked.
+1. **Flag File Definition**:
+```python
+defineConstant("FLAG_FILE", "flag.txt");
+```
+This defines a flag file that serves as a communication channel between SLiM and the Python environment.
+
+2. **State Output**:
+```python
+g = p1.sampleIndividuals(25).genomes;
+g.outputMS("state.txt", append=T);
+```
+This hook outputs the current state of the simulation in MS format, which the environment uses to construct observations.
+
+3. **Action Reading**:
+```python
+while (fileExists(FLAG_FILE) == F) {}
+mutRateStr = readFile(FLAG_FILE);
+while (size(mutRateStr) == 0) {
+    mutRateStr = readFile(FLAG_FILE);
+}
+mutRate = asFloat(mutRateStr);
+sim.chromosome.setMutationRate(mutRate);
+```
+This hook waits for the flag file to exist, reads the action value from it (in this case, a new mutation rate), and applies the action to the simulation.
+
+4. **Simulation Completion Signal**:
+```python
+writeFile("generation_complete.txt", "1");
+```
+This hook signals that the simulation has completed, allowing the Python environment to clean up resources.
+
+5. **File Cleanup**:
+```python
+deleteFile(FLAG_FILE);
+```
+This hook deletes the flag file after reading the action, preparing for the next communication cycle.
+
+You can verify if your script contains the necessary hooks using the `validate_slim_script()` utility function.
 
 ### Base environment
 The base environment extends the Gymnasium framework, handling observations from the environment and passing actions to the environment, along with other helping Gymnasium functions. Importantly, the base environment does not attempt to modify the observation from the environment or calculate a reward or action; rather these will be extended by the custom environment designed to handle the task at hand.
