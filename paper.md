@@ -20,6 +20,7 @@ affiliations:
    index: 1
 date: 21 April 2025
 bibliography: paper.bib
+---
 
 # Summary
 Wright-Fisher evolutionary dynamics provide a mathematical framework for modeling populations over discrete time steps [1]. Deep reinforcement learning (RL) has proven highly effective in optimizing complex sequential decisions, achieving expert-level performance in domains like Poker and Go [2, 3]. However, applying RL to evolutionary problems requires suitable training environments. We present `SLiM-Gym`, a Python package that bridges this gap by connecting the `Gymnasium` RL framework with `SLiM`, a forward-time population genetics simulator, enabling researchers to apply RL methods to study evolutionary processes and generate novel hypotheses.
