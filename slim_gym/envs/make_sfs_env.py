@@ -2,9 +2,13 @@
 """
 @author: nzupp
 """
-import slim_gym
+import os
+import pkg_resources
+from .. import SFSGym
 
-def make_sfs_env(slim_file='slim_gym/scripts/bottleneck.slim',
+default_script = pkg_resources.resource_filename('slim_gym', 'scripts/bottleneck.slim')
+
+def make_sfs_env(slim_file=default_script,
     mutation_rate=1e-7,
     num_sites=999,
     sampled_individuals=25):
@@ -21,7 +25,7 @@ def make_sfs_env(slim_file='slim_gym/scripts/bottleneck.slim',
         Nothing       
     """
     
-    env = slim_gym.SFSGym(
+    env = SFSGym(
         slim_file=slim_file,
         mutation_rate=mutation_rate,
         num_sites=num_sites,
