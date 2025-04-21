@@ -12,7 +12,7 @@ import pkg_resources
 from .. import make_sfs_env
 from stable_baselines3 import PPO
 
-def main():
+def PPO_example():
     # Create the environment
     bottleneck_script = pkg_resources.resource_filename('slim_gym', 'scripts/bottleneck.slim')
 
@@ -29,6 +29,3 @@ def main():
     model.save("ppo_sfs_env")
 
     print("Training complete. Model saved as ppo_sfs_env.zip")
-
-if __name__ == "__main__":
-    main()
