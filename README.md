@@ -1,5 +1,11 @@
 # SLiM-Gym
-An early development Gymnasium wrapper for the SLiM 4 simulator enabling reinforcement learning for population genetics
+
+## General overview
+SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning in population genetics. It provides a framework for seamless communication with SLiM 4's evolutionary models while integrating with Gymnasium’s intuitive action, observation, and reward systems.
+
+## Components
+### SLiM evolutionary model
+
 
 ## Quick start guide
 1. Install via pip: `pip install slim_gym`
