@@ -16,6 +16,9 @@ def main():
     # Create the environment
     bottleneck_script = pkg_resources.resource_filename('slim_gym', 'scripts/bottleneck.slim')
 
+    # Make env
+    env = make_sfs_env(slim_file=bottleneck_script)
+    
     # Create PPO model
     model = PPO("MlpPolicy", env, verbose=1)
 
