@@ -13,6 +13,7 @@ dependencies = [
     "matplotlib==3.10.0",
     "numpy==1.26.4",
     "stable-baselines3",
+    "setuptools",
 ]
 
 [project.urls]
