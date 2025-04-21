@@ -17,7 +17,7 @@ actions. An overview of the env can be found in the associated paper.
 import numpy as np
 from gymnasium import spaces
 from collections import deque
-from .slim_gym_wrapper import SLiMGym
+from .. import SLiMGym
 
 class SFSGym(SLiMGym):
     def __init__(self, 
