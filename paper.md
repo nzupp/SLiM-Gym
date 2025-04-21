@@ -9,11 +9,9 @@ authors:
   - name: Niko Zuppas
     corresponding: true
     orcid: 0009-0003-6951-9652
-    equal-contrib: true
     affiliation: 1
   - name: Bryan C. Carstens
     orcid: 0000-0002-1552-227X
-    equal-contrib: true
     affiliation: 1
 affiliations:
  - name: Department of Evolution, Ecology, and Organismal Biology and Museum of Biological Diversity. 1315 Kinnear Rd., Columbus OH 43212
