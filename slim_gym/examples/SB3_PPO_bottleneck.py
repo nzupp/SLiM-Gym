@@ -10,7 +10,6 @@ AFS in a bottleneck
 
 from slim_gym import make_sfs_env
 from stable_baselines3 import PPO
-from stable_baselines3.common.env_util import make_vec_env
 
 def main():
     # Create the environment
