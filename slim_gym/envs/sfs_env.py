@@ -20,7 +20,11 @@ from collections import deque
 from .slim_gym_wrapper import SLiMGym
 
 class SFSGym(SLiMGym):
-    def __init__(self, slim_file):
+    def __init__(self, 
+                slim_file,
+                mutation_rate,
+                sampled_individuals,
+                num_sites):
         """
         Initalizes the env.
         
@@ -34,9 +38,9 @@ class SFSGym(SLiMGym):
         # Initialize base class with generated script
         super().__init__(slim_file=slim_file)
         
-        self.current_pop_size = 10000
-        self.sampled_individuals = 25
-        self.num_sites = 999
+        self.current_mutation_rate = mutation_rate
+        self.sampled_individuals = sampled_individuals
+        self.num_sites = num_sites
         self.num_bins = 100
         self.sfs_stack_size = 8
         self.expectation_sfs = None
@@ -83,11 +87,11 @@ class SFSGym(SLiMGym):
             noise = np.full(self.num_bins, 1e-10)
             self.sfs_stack.append(noise)
 
-    # The data passed from SLiM is not immediately in SFS format- in fact it is in MS format
-    # (Note: This format can be changed in either the .slim script or SLiM injector)
+    # The data passed from SLiM is not immediately in SFS format- it is in MS format
+    # (Note: This format can be changed in either the .slim script)
     def get_sfs(self, state_data):
         """
-        Code to extract
+        Code to extract the sfs from ms output
 
         Params
             state_data (SLiM MS format): The output SLiM in MS format
@@ -135,7 +139,7 @@ class SFSGym(SLiMGym):
     
     def get_expectation_sfs(self, state_data):
         """
-        Use log data from our burn in to set an expectation SFS before any Ne modification
+        Use log data from our burn in to set an expectation SFS before any actions
 
         Params
             state_data (SLiM MS format): The output of the SLiM in MS format
@@ -174,23 +178,22 @@ class SFSGym(SLiMGym):
 
     def process_action(self, action):
         """
-        Implement the abstract SLiM-Gym function by assigning a new population size.
-        Note: Population size is bound between self.sampled_indv and 10e10, which could be too restrictive
+        Implement the abstract SLiM-Gym function by assigning an adjusted mutation rate.
 
         Params
             action (Int): Discrete action of 0, 1 or 2
 
         Returns
-            new_rate (Float): The modified population size
+            new_rate (Float): The modified rate
         """
         multiplier = self.action_map[action]
-        new_pop_size = np.clip(
-            self.current_pop_size * multiplier,
+        new_rate = np.clip(
+            self.current_mutation_rate * multiplier,
             self.sampled_individuals,
             10e10
         )
-        self.current_pop_size = new_pop_size
-        return str(new_pop_size)
+        self.current_mutation_rate = new_rate
+        return str(new_rate)
 
     # TODO I imagine this could be the center of a decent experiment
     def calculate_reward(self, state, action, next_state):
