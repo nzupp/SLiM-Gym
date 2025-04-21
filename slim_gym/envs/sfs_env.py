@@ -67,7 +67,7 @@ class SFSGym(SLiMGym):
         
         # We also implement 'SFS stacking', similar to frame stacking, to extend
         # conext in training
-        self.sfs_stack = deque(maxlen=sfs_stack_size)
+        self.sfs_stack = deque(maxlen=self.sfs_stack_size)
         self.initialize_sfs_stack()
 
     def initialize_sfs_stack(self):
