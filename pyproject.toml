@@ -8,8 +8,8 @@ authors = [{name = "Niko Zuppas", email = "zuppas.3@osu.edu"}]
 readme = "README.md"
 dynamic = ["version", "description"]
 dependencies = [
-    "gymnasium==0.26.3",
-    "matplotlib",
+    "gymnasium==1.0.0",
+    "matplotlib==3.10.0",
     "numpy==1.26.4",
     "stable-baselines3",
     "setuptools",
