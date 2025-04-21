@@ -4,7 +4,7 @@
 """
 import slim_gym
 
-def make_env(slim_file='slim_gym/scripts/bottleneck.slim',
+def make_sfs_env(slim_file='slim_gym/scripts/bottleneck.slim',
     mutation_rate=1e-7,
     num_sites=999,
     sampled_individuals=25):
