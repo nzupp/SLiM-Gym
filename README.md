@@ -1,7 +1,10 @@
 # SLiM-Gym
+SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning as a tool for population genetics.
 
 ## General overview
-SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning as a tool for population genetics. It provides a framework for seamless communication with SLiM 4's evolutionary models while integrating with Gymnasium’s intuitive action, observation, and reward systems.
+Reinforcement learning (RL) is a machine learning approach where agents learn optimal actions through interaction with an environment, while Gymnasium (formerly OpenAI Gym) provides standardized environments for developing and comparing RL algorithms. SLiM is a powerful forward-time simulation software that models evolutionary processes by tracking individuals and their genomes across generations. 
+
+SLiM-Gym framework provides seamless communication between SLiM 4's evolutionary models and Gymnasium's intuitive action, observation, and reward systems, allowing computational researchers to assess the types of reinforcement learning approaches best suited to evolutionary genomics, population geneticists to explore the relationships between parameters over genetic time, and a unified way to structure these problems for comparable results.
 
 ## Requirements
 - Python 3.8+
@@ -91,7 +94,46 @@ is_slim_available = slim_gym.check_slim_installed() # Check if SLiM is properly 
 is_compatible = slim_gym.validate_slim_script('path/to/custom_script.slim') # Verify if a custom SLiM script contains necessary hooks for SLiM-Gym
 ```
 
-## Custom task creation (TODO)
+## Creating Custom Environments
+
+SLiM-Gym allows you to create custom environments tailored to specific evolutionary questions. To create a custom environment, extend the base `SLiMGym` class and implement four key methods:
+
+1. **Process Initial State**: Define how to process the initial state from SLiM
+2. **Process State**: Transform SLiM output into meaningful observations
+3. **Process Action**: Convert reinforcement learning actions into SLiM parameters
+4. **Calculate Reward**: Determine the reward based on actions and resulting states
+
+Here's a simplified example:
+
+```python
+class MyCustomEnv(SLiMGym):
+    def __init__(self, slim_file, other_params):
+        super().__init__(slim_file=slim_file)
+        
+        # Define action and observation spaces
+        self.action_space = spaces.Discrete(3)  # Example: 3 possible actions
+        self.observation_space = spaces.Box(...)  # Define observation shape
+        
+    def process_state(self, state_data):
+        # Transform SLiM output into observation
+        # Example: Parse MS format, extract metrics, etc.
+        return observation
+        
+    def process_action(self, action):
+        # Convert action to SLiM parameter
+        # Example: Map discrete action to mutation rate
+        return parameter_string
+        
+    def calculate_reward(self, state, action, next_state):
+        # Calculate reward based on state transition
+        # Example: Reward based on diversity or other metrics
+        return reward_value
+        
+    def get_initial_state(self):
+        # Define starting observation
+        return initial_observation
+```
+See the SFSGym implementation in the package for a complete example that uses the Site Frequency Spectrum as the observation space.
 
 ## Worked example
 The SLiM-Gym package comes equipped with two custom evolutionary simulations, representing a bottleneck and a growth scenario, and one test evniornment labeled SFSGym. SFS is a population genetics term standing for the Site Frequency Spectra, which represents the counts of alleles in a measured population. The SFS is critical for estimating demography, genetic diversity, population size, and other important summary statistics, including estimating theta. Theta is represented as 4 * mutation rate * effective population size.
