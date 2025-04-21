@@ -76,7 +76,7 @@ This component assigns the proper observation, action and reward handling for th
 ## Core API
 SLiM-Gym provides a few key components and functions for setting up evolutionary simulations with reinforcement learning:
 
-To create an environment for agent training, we need to call the task specific environment, `sfs_env` in this case. The custom task environment takes in the evolutionary model via a SLiM file, as well as the starting mutation rate, number of sites and the number of indivduals sampled. These must agree with the starting parameters of the simulation, and do not need to be specified if starting with a SLiM-Gym defined model.
+To create an environment for agent training, we need to call the task specific environment, `sfs_env` in this case. The custom task environment takes in the evolutionary model via a SLiM file, as well as the starting mutation rate, number of sites and the number of individuals sampled. These must agree with the starting parameters of the simulation, and do not need to be specified if starting with a SLiM-Gym defined model.
 ```python
 import slim_gym
 env = slim_gym. make_sfs_env(
@@ -87,7 +87,7 @@ env = slim_gym. make_sfs_env(
 )
 ```
 
-SLiM-Gym also offers validation of both the SLiM simulator download, and SLiM script hook verification to make sure any custom script will satisfy the SLiM-Gym communication protcol.
+SLiM-Gym also offers validation of both the SLiM simulator download, and SLiM script hook verification to make sure any custom script will satisfy the SLiM-Gym communication protocol.
 ```python
 import slim_gym
 is_slim_available = slim_gym.check_slim_installed() # Check if SLiM is properly installed and accessible
@@ -136,7 +136,7 @@ class MyCustomEnv(SLiMGym):
 See the SFSGym implementation in the package for a complete example that uses the Site Frequency Spectrum as the observation space.
 
 ## Worked example
-The SLiM-Gym package comes equipped with two custom evolutionary simulations, representing a bottleneck and a growth scenario, and one test evniornment labeled SFSGym. SFS is a population genetics term standing for the Site Frequency Spectra, which represents the counts of alleles in a measured population. The SFS is critical for estimating demography, genetic diversity, population size, and other important summary statistics, including estimating theta. Theta is represented as 4 * mutation rate * effective population size.
+The SLiM-Gym package comes equipped with two custom evolutionary simulations, representing a bottleneck and a growth scenario, and one test environment labeled SFSGym. SFS is a population genetics term standing for the Site Frequency Spectra, which represents the counts of alleles in a measured population. The SFS is critical for estimating demography, genetic diversity, population size, and other important summary statistics, including estimating theta. Theta is represented as 4 * mutation rate * effective population size.
 
 In the example provided, the task is to maintain observed theta value from the SFS, in the presence of the bottleneck or growth simulation used. The reward is given based on the divergence of the measured SFS from several SFS of the idealized population following a burn-in period. The action is from three discrete choices; maintain the mutation rate, increase by 10% and reduce by 10%. The reinforcement training loop was then used with Stable Baseline3's Proximal Policy Optimization (PPO) algorithm. 
 
