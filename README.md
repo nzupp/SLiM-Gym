@@ -33,6 +33,29 @@ The base environment extends the Gymnasium framework, handling observations from
 ### Task environment
 This component assigns the proper observation, action and reward handling for the task at hand. Researchers may need to completely reformulate this file to ask the questions they are interested in. We provide an example task file, explained in further detail under the 'Examples' section.
 
+## Core API
+SLiM-Gym provides a few key components and functions for setting up evolutionary simulations with reinforcement learning:
+
+To create an environment for agent training, we need to call the task specific environment, `sfs_env` in this case. The custom task environment takes in the evolutionary model via a SLiM file, as well as the starting mutation rate, number of sites and the number of indivduals sampled. These must agree with the starting parameters of the simulation, and do not need to be specified if starting with a SLiM-Gym defined model.
+```python
+import slim_gym
+env = slim_gym. make_sfs_env(
+    slim_file='bottleneck',     # Path to custom .slim file or 'bottleneck'/'growth'
+    mutation_rate=1e-7,         # Starting mutation rate for the simulation
+    num_sites=999,              # Number of sites (recommend under 1k for testing)
+    sampled_individuals=25      # Number of individuals sampled each step
+)
+```
+
+SLiM-Gym also offers validation of both the SLiM simulator download, and SLiM script hook verification to make sure any custom script will satisfy the SLiM-Gym communication protcol.
+```python
+import slim_gym
+is_slim_available = slim_gym.check_slim_installed() # Check if SLiM is properly installed and accessible
+is_compatible = slim_gym.validate_slim_script('path/to/custom_script.slim') # Verify if a custom SLiM script contains necessary hooks for SLiM-Gym
+```
+
+## Custom task creation (TODO)
+
 ## Worked example
 The SLiM-Gym package comes equipped with two custom evolutionary simulations, representing a bottleneck and a growth scenario, and one test evniornment labeled SFSGym. SFS is a population genetics term standing for the Site Frequency Spectra, which represents the counts of alleles in a measured population. The SFS is critical for estimating demography, genetic diversity, population size, and other important summary statistics, including estimating theta. Theta is represented as 4 * mutation rate * effective population size.
 
