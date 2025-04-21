@@ -44,10 +44,10 @@ The agent does not directly observe $X_n^N$ or $\mu$. Instead, it observes a sit
 
 The reward function evaluates how well the agent maintains the expected site frequency distribution by calculating the Kullback–Leibler divergence between the observed and expected SFS distributions. The population size $N$ is consistently modified according to a growth or decay model each generation but is never revealed, forcing the agent to adapt $\mu_{n+1}$ to preserve the SFS. This provides a theoretically tractable test case that maintains limited biological realism.
 
-Conclusion
+# Conclusion
 The application of reinforcement learning algorithms to evolutionary scenarios represents an exciting direction for future research. RL offers a novel way to approach open questions in evolutionary biology by allowing agents to develop process-driven hypotheses about evolutionary dynamics. SLiM-Gym enables this exploratory framework, where agent-derived strategies can be scientifically evaluated, advancing our understanding of complex systems.
 
-Acknowledgements
+# Acknowledgements
 Todo
 
 
