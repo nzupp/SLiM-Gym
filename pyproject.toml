@@ -4,6 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "slim_gym"
+description = "SLiM-Gym: A reinforcement learning framework for population genetics"
 authors = [{name = "Niko Zuppas", email = "zuppas.3@osu.edu"}]
 readme = "README.md"
 dynamic = ["version", "description"]
@@ -11,6 +12,7 @@ dependencies = [
     "gymnasium==1.0.0",
     "matplotlib==3.10.0",
     "numpy==1.26.4",
+    "stable-baselines3",
 ]
 
 [project.urls]
