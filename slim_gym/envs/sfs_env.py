@@ -188,10 +188,10 @@ class SFSGym(SLiMGym):
         """
         multiplier = self.action_map[action]
         new_rate = np.clip(
-            self.current_mutation_rate * multiplier,
-            self.sampled_individuals,
-            10e10
-        )
+    	    self.current_mutation_rate * multiplier,
+    	    1e-9,
+    	    1e-5
+	)
         self.current_mutation_rate = new_rate
         return str(new_rate)
 
