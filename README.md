@@ -3,47 +3,70 @@
 ## General overview
 SLiM-Gym is an early-stage Gymnasium wrapper for the SLiM 4 simulator, designed to enable reinforcement learning in population genetics. It provides a framework for seamless communication with SLiM 4's evolutionary models while integrating with Gymnasium’s intuitive action, observation, and reward systems.
 
-## Components
-### SLiM evolutionary model
-
+## Requirements
+- Python 3.8+
+- SLiM 4.0 or newer
+- For visualization features: matplotlib, seaborn (optional)
+- Stable-Baselines3 for reinforcement learning examples
 
 ## Quick start guide
 1. Install via pip: `pip install slim_gym`
 2. Install SLiM 4 from the [Messer Lab](https://messerlab.org/slim/) and ensure it's in your system PATH or working directory
-3. Run a basic, random agent:
+3. Run the example to train a PPO agent on a bottleneck simulation example:
 
 ```python
 import slim_gym
-slim_gym.run_random_agent()
+slim_gym.PPO_example()
 ```
 
-Users can also adjust the environment and pass it as a parameter to the random walk algorithm:
+## Components
+### SLiM evolutionary model
+SLiM-Gym utilizes Eidos scripts created for running evolutionary simulations with SLiM. The SLiM 4 documentation goes into extensive detail regarding the specifics of these tools, but in short SLiM is highly powerful and flexible, able to model most evolutionary scenarios. The SLiM-Gym package includes two established SLiM scripts- one tracking a single population experiencing a bottleneck, and another that tracks population growth.
+
+Both of these models contain SLiM-Gym 'hooks', or additions to the underlying model, that enable SLiM to communicate with the rest of the SLiM-Gym framework. These hooks include reading a flag file and setting parameters from it, using a signal file to continue generations, a end of simulation signal.
+
+Both the presence of the SLiM simulator in the path or working directory and the presence of the necessary hooks can be checked.
+
+### Base environment
+The base environment extends the Gymnasium framework, handling observations from the environment and passing actions to the environment, along with other helping Gymnasium functions. Importantly, the base environment does not attempt to modify the observation from the environment or calculate a reward or action; rather these will be extended by the custom environment designed to handle the task at hand.
+
+### Task environment
+This component assigns the proper observation, action and reward handling for the task at hand. Researchers may need to completely reformulate this file to ask the questions they are interested in. We provide an example task file, explained in further detail under the 'Examples' section.
+
+## Worked example
+The SLiM-Gym package comes equipped with two custom evolutionary simulations, representing a bottleneck and a growth scenario, and one test evniornment labeled SFSGym. SFS is a population genetics term standing for the Site Frequency Spectra, which represents the counts of alleles in a measured population. The SFS is critical for estimating demography, genetic diversity, population size, and other important summary statistics, including estimating theta. Theta is represented as 4 * mutation rate * effective population size.
+
+In the example provided, the task is to maintain observed theta value from the SFS, in the presence of the bottleneck or growth simulation used. The reward is given based on the divergence of the measured SFS from several SFS of the idealized population following a burn-in period. The action is from three discrete choices; maintain the mutation rate, increase by 10% and reduce by 10%. The reinforcement training loop was then used with Stable Baseline3's Proximal Policy Optimization (PPO) algorithm. 
+
+In order train on this task, first we would want to import the necessary dependencies and load our simulation file.
 
 ```python
 import slim_gym
+from stable_baselines3 import PPO
 
-# Redefine env
-output_file='sim.slim'
-init_mutation_rate=1e-7
-num_sites=999
-recomb_rate=1e-8
-pop_size=10000
-sampled_individuals=25
-sfs_stack_size=8
-bottleneck=0.99
-
-env = slim_gym.make_env(output_file=output_file,
-    init_mutation_rate=init_mutation_rate,
-    num_sites=num_sites,
-    recomb_rate=recomb_rate,
-    pop_size=pop_size,
-    sampled_individuals=sampled_individuals,
-    sfs_stack_size=sfs_stack_size,
-    bottleneck=bottleneck)
-
-slim_gym.run_random_agent(env=env)
+slim_script = 'scripts/bottleneck.slim' # for your own script, or 'bottleneck' or 'growth' for predefined models
 ```
 
-If these parameters are unfamiliar to you, our more detailed documentation (coming soon) is a great place to start. This environment functions as a Gymnasium environment, and can be used as such downstream. The code for making environments and the random walk algorithm can be found in the examples/ folder.
+We will then want to create an environment for our agent.
 
+```python
+env = make_sfs_env(slim_file=slim_script)
+```
 
+Then instantiate a PPO model from Stable Baselines. These are default parameters to run a multilayer perceptron policy on our environment. The verbose output set to 1 will log training details to the console. See the Stable Baselines documentation for more information or customization strategies regarding the reinforcement learning approach to the problem.
+
+```python
+model = PPO("MlpPolicy", env, verbose=1)
+```
+
+Finally, we can train and save our results.
+
+```python
+model.learn(total_timesteps=5000)
+model.save("ppo_sfs_env")
+```
+
+This completes the training run. Note: this code can be directly run using the 'slim_gym.PPO_example()' code as well.
+
+## Troubleshooting
+If you encounter any issues with installation or simulation errors, please report them on our GitHub issue tracker [link]. Common issues include SLiM not being found in PATH (ensure SLiM is properly installed and accessible from your command line) and simulation failures due to biologically implausible parameter settings.
