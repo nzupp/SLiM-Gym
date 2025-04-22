@@ -5,7 +5,7 @@
 Sample PPO example using SB3 for population genetics
 
 Task: Identify the change in mutation rate needed to maintain previous
-AFS in a bottleneck
+SFS in a bottleneck
 """
 
 import pkg_resources
