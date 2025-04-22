@@ -14,7 +14,7 @@ initialize() {
 
 900:1000 late() {
     if (community.tick % 10 == 0) {
-        g = p1.sampleIndividuals(25).genomes;
+        g = p1.sampleIndividuals(100).genomes;
         g.outputMS("state.txt", append=T);
     }
 }
@@ -43,7 +43,7 @@ initialize() {
 
 1001:5000 late() {
     if (community.tick % 10 == 0) {
-        g = p1.sampleIndividuals(25).genomes;
+        g = p1.sampleIndividuals(100).genomes;
         g.outputMS("state.txt", append=T);
         deleteFile(FLAG_FILE);
     }
