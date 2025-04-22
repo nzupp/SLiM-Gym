@@ -3,7 +3,7 @@
 @author: nzupp
 SLiM-Gym: A gymnasium environment for SLiM evolutionary simulations
 """
-__version__ = "0.2.12"
+__version__ = "0.2.13"
 
 # Import core components
 from .envs.base_env import SLiMGym
