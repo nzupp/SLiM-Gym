@@ -36,7 +36,7 @@ This defines a flag file that serves as a communication channel between SLiM and
 
 2. **State Output**:
 ```python
-g = p1.sampleIndividuals(25).genomes;
+g = p1.sampleIndividuals(100).genomes;
 g.outputMS("state.txt", append=T);
 ```
 This hook outputs the current state of the simulation in MS format, which the environment uses to construct observations.
@@ -83,7 +83,7 @@ env = slim_gym. make_sfs_env(
     slim_file='bottleneck',     # Path to custom .slim file or 'bottleneck'/'growth'
     mutation_rate=1e-7,         # Starting mutation rate for the simulation
     num_sites=999,              # Number of sites (recommend under 1k for testing)
-    sampled_individuals=25      # Number of individuals sampled each step
+    sampled_individuals=100      # Number of individuals sampled each step
 )
 ```
 
