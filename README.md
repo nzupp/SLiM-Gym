@@ -24,7 +24,7 @@ slim_gym.PPO_example()
 
 ## Components
 ### SLiM evolutionary model
-SLiM-Gym utilizes Eidos scripts created for running evolutionary simulations with SLiM. The SLiM 4 documentation goes into extensive detail regarding the specifics of these tools, but in short SLiM is highly powerful and flexible, able to model most evolutionary scenarios. The SLiM-Gym package includes two established SLiM scripts- one tracking a single population experiencing a bottleneck, and another that tracks population growth.
+SLiM-Gym utilizes Eidos scripts created for running evolutionary simulations with SLiM. The SLiM 4 documentation goes into extensive detail regarding the specifics of these tools, but in short SLiM is highly powerful and flexible, able to model most evolutionary scenarios. The SLiM-Gym package includes two established SLiM scripts- one tracking a single population experiencing a bottleneck, and another that tracks population growth. More complex SLiM models will be added in future updates.
 
 Both of these models contain SLiM-Gym 'hooks', or additions to the underlying model, that enable SLiM to communicate with the rest of the SLiM-Gym framework. For a SLiM script to be compatible with SLiM-Gym, it needs to implement several specific hooks:
 
@@ -71,7 +71,7 @@ You can verify if your script contains the necessary hooks using the `validate_s
 The base environment extends the Gymnasium framework, handling observations from the environment and passing actions to the environment, along with other helping Gymnasium functions. Importantly, the base environment does not attempt to modify the observation from the environment or calculate a reward or action; rather these will be extended by the custom environment designed to handle the task at hand.
 
 ### Task environment
-This component assigns the proper observation, action and reward handling for the task at hand. Researchers may need to completely reformulate this file to ask the questions they are interested in. We provide an example task file, explained in further detail under the 'Examples' section.
+This component assigns the proper observation, action and reward handling for the task at hand. Researchers may need to completely reformulate this file to ask the questions they are interested in. We provide an example task file, aimed at maintaining an expected site frequnecy spectra, as part of the package. More custom tasks will be added in future updates. More information on task environments can be found in both the custom environments and examples sections of this readme.
 
 ## Core API
 SLiM-Gym provides a few key components and functions for setting up evolutionary simulations with reinforcement learning:
