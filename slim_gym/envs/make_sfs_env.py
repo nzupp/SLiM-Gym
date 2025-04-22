@@ -11,7 +11,7 @@ default_script = pkg_resources.resource_filename('slim_gym', 'scripts/bottleneck
 def make_sfs_env(slim_file=default_script,
     mutation_rate=1e-7,
     num_sites=999,
-    sampled_individuals=25):
+    sampled_individuals=100):
     """
     Initalizes the env.
     
