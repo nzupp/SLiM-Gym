@@ -8,7 +8,7 @@ SLiM-Gym framework provides seamless communication between SLiM 4's evolutionary
 
 ## Requirements
 - Python 3.8+
-- SLiM 4.0 or newer
+- SLiM 4.0 to 4.3 (SLiM 5 has recently released and has not yet been integrated into SLiM-Gym)
 - For visualization features: matplotlib, seaborn (optional)
 - Stable-Baselines3 for reinforcement learning example
 
