@@ -12,3 +12,8 @@ Extends the main four key functions created by the base env
 The action taken each step will represent one connection placed on a spatial grid. The 
 observation will be based on genetic diversity and inbreeding
 """
+
+import numpy as np
+from gymnasium import spaces
+from collections import deque
+from .. import SLiMGym
