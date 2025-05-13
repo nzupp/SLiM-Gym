@@ -19,3 +19,22 @@ import numpy as np
 from gymnasium import spaces
 from collections import deque
 from .. import SLiMGym
+
+class GeneticRescueGym(SLiMGym):
+    def __init__(self, 
+                slim_file,
+                migration_rate,
+                sampled_individuals,
+                num_sites):
+        """
+        Initalizes the genetic rescue env.
+        
+        Params:
+            slim_file (String): Name of the SLiM script
+            
+        Returns:
+            Nothing       
+        """
+        
+        # Initialize base class with generated script
+        super().__init__(slim_file=slim_file)
