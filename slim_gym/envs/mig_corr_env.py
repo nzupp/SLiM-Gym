@@ -17,3 +17,22 @@ import numpy as np
 from gymnasium import spaces
 from collections import deque
 from .. import SLiMGym
+
+class MigratoryCorridorGym(SLiMGym):
+    def __init__(self, 
+                slim_file,
+                migration_rate,
+                sampled_individuals,
+                num_sites):
+        """
+        Initalizes the migratory corridor env.
+        
+        Params:
+            slim_file (String): Name of the SLiM script
+            
+        Returns:
+            Nothing       
+        """
+        
+        # Initialize base class with generated script
+        super().__init__(slim_file=slim_file)
